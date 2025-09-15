@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elon Musk: An Interactive Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white antialiased flex flex-col items-center justify-center h-screen">
+
+    <div id="presentation-container" class="w-full h-full max-w-5xl mx-auto flex items-center justify-center p-4">
+
+        <!-- Slide 1: Title -->
+        <div class="slide active flex-col items-center justify-center text-center">
+            <header>
+                <div class="flex justify-center items-center mb-6">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/1200px-Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Elon Musk Portrait" class="w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-indigo-500 shadow-lg object-cover">
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight uppercase">Elon Musk</h1>
+                <p class="text-2xl md:text-3xl font-semibold gradient-text mt-2">Architect of Tomorrow</p>
+                <p class="text-gray-400 mt-4">An Interactive Presentation</p>
+            </header>
+        </div>
+
+        <!-- Slide 2: The Ventures -->
+        <div class="slide flex-col w-full">
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
+                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-indigo-500 pb-3">The Ventures</h2>
+                <ul class="space-y-6 text-lg">
+                    <li class="flex items-start">
+                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128640;</span>
+                        <div>
+                            <h3 class="font-semibold text-xl">SpaceX</h3>
+                            <p class="text-gray-400">Making humanity a multi-planetary species with reusable rockets.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128663;</span>
+                        <div>
+                            <h3 class="font-semibold text-xl">Tesla</h3>
+                            <p class="text-gray-400">Accelerating the world's transition to sustainable energy.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#129504;</span>
+                        <div>
+                            <h3 class="font-semibold text-xl">Neuralink</h3>
+                            <p class="text-gray-400">Connecting humans and computers with brain-machine interfaces.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128676;</span>
+                        <div>
+                            <h3 class="font-semibold text-xl">The Boring Company</h3>
+                            <p class="text-gray-400">Alleviating urban traffic congestion with high-speed tunnels.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Grand Vision -->
+        <div class="slide flex-col w-full">
+             <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
+                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-pink-500 pb-3">The Grand Vision</h2>
+                <ul class="space-y-6 text-lg">
+                    <li class="flex items-start">
+                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
+                        <p class="text-gray-300">Establish a self-sustaining city on Mars.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
+                        <p class="text-gray-300">Transform global energy to be fully sustainable.</p>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
+                        <p class="text-gray-300">Solve AI safety through brain-AI symbiosis.</p>
+                    </li>
+                     <li class="flex items-start">
+                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
+                        <p class="text-gray-300">Revolutionize transportation to be fast and electric.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: Characteristics & Skills -->
+        <div class="slide flex-col w-full">
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
+                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-indigo-500 pb-3">Characteristics & Skills</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center text-md">
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Visionary Leadership</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Engineering Expertise</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Calculated Risk-Taking</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Unmatched Determination</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Capital Allocation</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Talent Magnetism</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: The Mindset -->
+        <div class="slide flex-col w-full">
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
+                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-pink-500 pb-3">The Mindset</h2>
+                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center text-md">
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>First-Principles Thinking</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Intense Work Ethic</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Bias for Action & Speed</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Embraces Failure as Data</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Physics-Based Reasoning</p></div>
+                    <div class="bg-gray-900 p-4 rounded-lg"><p>Mission-Driven Focus</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Quote -->
+        <div class="slide flex-col items-center justify-center text-center">
+            <footer class="p-8">
+                <p class="text-2xl md:text-3xl italic text-gray-400">"When something is important enough, you do it even if the odds are not in your favor."</p>
+                <p class="text-lg text-gray-500 mt-4">- Elon Musk</p>
+            </footer>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center max-w-5xl mx-auto">
+        <button id="prevBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            &larr; Previous
+        </button>
+        <div id="slide-counter" class="text-gray-400"></div>
+        <button id="nextBtn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slide-counter');
+        
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+            });
+            slides[index].classList.add('active');
+            
+            // Update slide counter
+            slideCounter.textContent = `${index + 1} / ${slides.length}`;
+
+            // Update button states
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+        
+        // Key navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextBtn.click();
+            } else if (e.key === 'ArrowLeft') {
+                prevBtn.click();
+            }
+        });
+
+        // Initial setup
+        showSlide(currentSlide);
+    </script>
+
+</body>
+</html>
+
+
