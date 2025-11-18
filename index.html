@@ -1,211 +1,732 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elon Musk: An Interactive Presentation</title>
+    
+    <title lang="ru">Printoy - 3D Печать Уникальных Игрушек</title>
+    <title lang="en">Printoy - Custom 3D Printed Toys</title>
+    <title lang="gr">Printoy - 3D Εκτύπωση Παιχνιδιών</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+    <!-- Иконки (Favicon) -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevent scrolling */
         }
-        .gradient-text {
-            background: linear-gradient(90deg, #4f46e5, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        html {
+            scroll-behavior: smooth;
         }
-        .slide {
+        
+        /* === ИСПРАВЛЕННАЯ ЛОГИКА МУЛЬТИЯЗЫЧНОСТИ === */
+        /* Мы используем атрибут lang у тега html для управления видимостью */
+        
+        /* Если html="ru", скрываем en и gr */
+        html[lang="ru"] [lang="en"], 
+        html[lang="ru"] [lang="gr"] {
+            display: none !important;
+        }
+
+        /* Если html="en", скрываем ru и gr */
+        html[lang="en"] [lang="ru"], 
+        html[lang="en"] [lang="gr"] {
+            display: none !important;
+        }
+
+        /* Если html="gr", скрываем ru и en */
+        html[lang="gr"] [lang="ru"], 
+        html[lang="gr"] [lang="en"] {
+            display: none !important;
+        }
+
+        /* Стили для активной кнопки языка */
+        .lang-btn.active {
+            font-weight: bold;
+            color: #2563EB; /* blue-600 */
+            text-decoration: underline;
+        }
+
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        #cookie-banner {
             display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
         }
-        .slide.active {
-            display: flex;
-            opacity: 1;
+        
+        model-viewer {
+            width: 100%;
+            height: 224px;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white antialiased flex flex-col items-center justify-center h-screen">
+<body class="bg-gray-100 text-gray-800">
 
-    <div id="presentation-container" class="w-full h-full max-w-5xl mx-auto flex items-center justify-center p-4">
-
-        <!-- Slide 1: Title -->
-        <div class="slide active flex-col items-center justify-center text-center">
-            <header>
-                <div class="flex justify-center items-center mb-6">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/1200px-Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Elon Musk Portrait" class="w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-indigo-500 shadow-lg object-cover">
+    <!-- 1. Шапка (Header) -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            
+            <a href="#" class="text-3xl font-bold text-blue-600">
+                Printoy
+            </a>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Переключатель языка (Десктоп) -->
+                <div id="lang-switcher" class="hidden md:flex space-x-3 text-sm">
+                    <button onclick="switchLanguage('ru')" class="lang-btn active" data-lang="ru">RU</button>
+                    <button onclick="switchLanguage('en')" class="lang-btn" data-lang="en">EN</button>
+                    <button onclick="switchLanguage('gr')" class="lang-btn" data-lang="gr">GR</button>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tight uppercase">Elon Musk</h1>
-                <p class="text-2xl md:text-3xl font-semibold gradient-text mt-2">Architect of Tomorrow</p>
-                <p class="text-gray-400 mt-4">An Interactive Presentation</p>
-            </header>
-        </div>
 
-        <!-- Slide 2: The Ventures -->
-        <div class="slide flex-col w-full">
-            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
-                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-indigo-500 pb-3">The Ventures</h2>
-                <ul class="space-y-6 text-lg">
-                    <li class="flex items-start">
-                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128640;</span>
-                        <div>
-                            <h3 class="font-semibold text-xl">SpaceX</h3>
-                            <p class="text-gray-400">Making humanity a multi-planetary species with reusable rockets.</p>
-                        </div>
+                <!-- Навигация -->
+                <ul class="hidden md:flex space-x-6 items-center">
+                    <li>
+                        <a href="#catalog" class="text-gray-600 hover:text-blue-600 transition-colors" lang="ru">Каталог</a>
+                        <a href="#catalog" class="text-gray-600 hover:text-blue-600 transition-colors" lang="en">Catalog</a>
+                        <a href="#catalog" class="text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Κατάλογος</a>
                     </li>
-                    <li class="flex items-start">
-                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128663;</span>
-                        <div>
-                            <h3 class="font-semibold text-xl">Tesla</h3>
-                            <p class="text-gray-400">Accelerating the world's transition to sustainable energy.</p>
-                        </div>
+                    <li>
+                        <a href="#custom-order" class="text-gray-600 hover:text-blue-600 transition-colors" lang="ru">На заказ</a>
+                        <a href="#custom-order" class="text-gray-600 hover:text-blue-600 transition-colors" lang="en">Custom</a>
+                        <a href="#custom-order" class="text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Παραγγελία</a>
                     </li>
-                    <li class="flex items-start">
-                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#129504;</span>
-                        <div>
-                            <h3 class="font-semibold text-xl">Neuralink</h3>
-                            <p class="text-gray-400">Connecting humans and computers with brain-machine interfaces.</p>
-                        </div>
+                    <li>
+                        <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors" lang="ru">О нас</a>
+                        <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors" lang="en">About Us</a>
+                        <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Σχετικά</a>
                     </li>
-                    <li class="flex items-start">
-                        <span class="text-indigo-400 font-bold text-2xl mr-4 mt-1">&#128676;</span>
-                        <div>
-                            <h3 class="font-semibold text-xl">The Boring Company</h3>
-                            <p class="text-gray-400">Alleviating urban traffic congestion with high-speed tunnels.</p>
-                        </div>
+                    <li>
+                        <a href="#contacts" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors" lang="ru">Связаться</a>
+                        <a href="#contacts" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors" lang="en">Contact</a>
+                        <a href="#contacts" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors" lang="gr">Επαφή</a>
                     </li>
                 </ul>
+                
+                <!-- Кнопка мобильного меню -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Мобильное меню -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4">
+            <ul class="flex flex-col space-y-4">
+                <li>
+                    <a href="#catalog" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="ru">Каталог</a>
+                    <a href="#catalog" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="en">Catalog</a>
+                    <a href="#catalog" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Κατάλογος</a>
+                </li>
+                <li>
+                    <a href="#custom-order" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="ru">На заказ</a>
+                    <a href="#custom-order" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="en">Custom</a>
+                    <a href="#custom-order" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Παραγγελία</a>
+                </li>
+                <li>
+                    <a href="#about" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="ru">О нас</a>
+                    <a href="#about" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="en">About Us</a>
+                    <a href="#about" class="block text-gray-600 hover:text-blue-600 transition-colors" lang="gr">Σχετικά</a>
+                </li>
+                <li>
+                    <a href="#contacts" class="block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors text-center" lang="ru">Связаться</a>
+                    <a href="#contacts" class="block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors text-center" lang="en">Contact</a>
+                    <a href="#contacts" class="block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors text-center" lang="gr">Επαφή</a>
+                </li>
+            </ul>
+            <!-- Переключатель языка (Моб.) -->
+            <div id="mobile-lang-switcher" class="flex justify-center space-x-4 mt-4 text-sm">
+                <button onclick="switchLanguage('ru')" class="lang-btn active" data-lang="ru">RU</button>
+                <button onclick="switchLanguage('en')" class="lang-btn" data-lang="en">EN</button>
+                <button onclick="switchLanguage('gr')" class="lang-btn" data-lang="gr">GR</button>
             </div>
         </div>
+    </header>
 
-        <!-- Slide 3: The Grand Vision -->
-        <div class="slide flex-col w-full">
-             <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
-                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-pink-500 pb-3">The Grand Vision</h2>
-                <ul class="space-y-6 text-lg">
-                    <li class="flex items-start">
-                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
-                        <p class="text-gray-300">Establish a self-sustaining city on Mars.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
-                        <p class="text-gray-300">Transform global energy to be fully sustainable.</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
-                        <p class="text-gray-300">Solve AI safety through brain-AI symbiosis.</p>
-                    </li>
-                     <li class="flex items-start">
-                        <span class="text-pink-400 mr-4 mt-1 text-2xl">&#10024;</span>
-                        <p class="text-gray-300">Revolutionize transportation to be fast and electric.</p>
-                    </li>
-                </ul>
+    <!-- 2. Главный экран (Hero Section) -->
+    <section class="bg-white">
+        <div class="container mx-auto px-6 py-16 md:py-24 flex flex-col md:flex-row items-center">
+            
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4" lang="ru">
+                    Оживите Свои Идеи
+                    <span class="text-blue-600">с 3D Печатью!</span>
+                </h1>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4" lang="en">
+                    Bring Your Ideas to Life
+                    <span class="text-blue-600">with 3D Printing!</span>
+                </h1>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4" lang="gr">
+                    Ζωντανέψτε τις Ιδέες σας
+                    <span class="text-blue-600">με 3D Εκτύπωση!</span>
+                </h1>
+                
+                <p class="text-lg text-gray-600 mb-8" lang="ru">
+                    Уникальные 3D-игрушки, созданные специально для вас. Безопасные, детализированные и яркие – прямо из мира фантазий.
+                </p>
+                <p class="text-lg text-gray-600 mb-8" lang="en">
+                    Unique 3D toys created just for you. Safe, detailed, and vibrant – straight from your imagination.
+                </p>
+                <p class="text-lg text-gray-600 mb-8" lang="gr">
+                    Μοναδικά 3D παιχνίδια φτιαγμένα μόνο για εσάς. Ασφαλή, λεπτομερή και ζωντανά – βγαλμένα από τη φαντασία σας.
+                </p>
+
+                <a href="#catalog" class="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="ru">
+                    Смотреть каталог
+                </a>
+                <a href="#catalog" class="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="en">
+                    View Catalog
+                </a>
+                <a href="#catalog" class="bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="gr">
+                    Προβολή Καταλόγου
+                </a>
+
+                <!-- Конструктор цветов -->
+                <div class="mt-10">
+                    <div class="text-sm font-semibold text-gray-700 mb-2" lang="ru">Выберите цвет:</div>
+                    <div class="text-sm font-semibold text-gray-700 mb-2" lang="en">Choose color:</div>
+                    <div class="text-sm font-semibold text-gray-700 mb-2" lang="gr">Επιλέξτε χρώμα:</div>
+                    <div class="flex space-x-3">
+                        <button class="color-swatch bg-blue-600" onclick="changeHeroColor('3B82F6')"></button>
+                        <button class="color-swatch bg-red-600" onclick="changeHeroColor('DC2626')"></button>
+                        <button class="color-swatch bg-green-600" onclick="changeHeroColor('16A34A')"></button>
+                        <button class="color-swatch bg-yellow-400" onclick="changeHeroColor('FACC15')"></button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="md:w-1/2">
+                <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Яркая+3D+Игрушка" 
+                     id="hero-image"
+                     alt="Пример 3D напечатанной игрушки" 
+                     class="rounded-lg shadow-xl w-full h-auto"
+                     onerror="this.src='https://placehold.co/600x400/3B82F6/FFFFFF?text=Printoy+3D+Toy'; this.onerror=null;">
             </div>
         </div>
+    </section>
 
-        <!-- Slide 4: Characteristics & Skills -->
-        <div class="slide flex-col w-full">
-            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
-                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-indigo-500 pb-3">Characteristics & Skills</h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center text-md">
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Visionary Leadership</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Engineering Expertise</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Calculated Risk-Taking</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Unmatched Determination</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Capital Allocation</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Talent Magnetism</p></div>
+    <!-- 6. БЛОК "ПРОЦЕСС РАБОТЫ" -->
+    <section class="py-16 bg-white border-b">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12" lang="ru">Как это работает</h2>
+            <h2 class="text-3xl font-bold text-center mb-12" lang="en">How It Works</h2>
+            <h2 class="text-3xl font-bold text-center mb-12" lang="gr">Πώς Λειτουργεί</h2>
+            <div class="flex flex-wrap justify-center text-center gap-8 md:gap-16">
+                <!-- Шаг 1 -->
+                <div class="w-48 p-4">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">1</div>
+                    <h3 class="font-bold text-xl mb-2" lang="ru">Идея</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="en">Idea</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="gr">Ιδέα</h3>
+                    <p class="text-sm text-gray-500" lang="ru">Пришлите фото, эскиз или выберите модель из каталога.</p>
+                    <p class="text-sm text-gray-500" lang="en">Send a photo, sketch, or choose a model from our catalog.</p>
+                    <p class="text-sm text-gray-500" lang="gr">Στείλτε μια φωτογραφία, σκίτσο ή διαλέξτε από τον κατάλογο.</p>
+                </div>
+                 <!-- Шаг 2 -->
+                <div class="w-48 p-4">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">2</div>
+                    <h3 class="font-bold text-xl mb-2" lang="ru">Магия</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="en">Magic</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="gr">Μαγεία</h3>
+                    <p class="text-sm text-gray-500" lang="ru">Мы готовим 3D-модель, согласовываем и запускаем печать.</p>
+                    <p class="text-sm text-gray-500" lang="en">We prepare the 3D model, get your approval, and start printing.</p>
+                    <p class="text-sm text-gray-500" lang="gr">Ετοιμάζουμε το 3D μοντέλο, παίρνουμε έγκριση και ξεκινάμε.</p>
+                </div>
+                 <!-- Шаг 3 -->
+                <div class="w-48 p-4">
+                    <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">3</div>
+                    <h3 class="font-bold text-xl mb-2" lang="ru">Доставка</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="en">Delivery</h3>
+                    <h3 class="font-bold text-xl mb-2" lang="gr">Παράδοση</h3>
+                    <p class="text-sm text-gray-500" lang="ru">Вы получаете готовую игрушку курьером или на почте.</p>
+                    <p class="text-sm text-gray-500" lang="en">You receive your finished toy via courier or post.</p>
+                    <p class="text-sm text-gray-500" lang="gr">Λαμβάνετε το παιχνίδι σας με κούριερ ή ταχυδρομείο.</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Slide 5: The Mindset -->
-        <div class="slide flex-col w-full">
-            <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-700 w-full">
-                <h2 class="text-3xl font-bold mb-6 text-center border-b-2 border-pink-500 pb-3">The Mindset</h2>
-                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center text-md">
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>First-Principles Thinking</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Intense Work Ethic</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Bias for Action & Speed</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Embraces Failure as Data</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Physics-Based Reasoning</p></div>
-                    <div class="bg-gray-900 p-4 rounded-lg"><p>Mission-Driven Focus</p></div>
+    <!-- 3. Каталог -->
+    <section id="catalog" class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="ru">Наши Хиты</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="en">Our Hits</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="gr">Δημοφιλή</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- КАРТОЧКА 1: 3D-VIEWER -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <model-viewer 
+                        src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb"
+                        alt="3D model of a robot"
+                        auto-rotate
+                        camera-controls
+                        shadow-intensity="1"
+                        autoplay>
+                    </model-viewer>
+                    
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" lang="ru">Интерактивная Модель</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="en">Interactive Model</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="gr">3D Μοντέλο</h3>
+                        <p class="text-gray-600 mb-4" lang="ru">
+                            (Демо) Подвижный робот. Покрутите его!
+                        </p>
+                        <p class="text-gray-600 mb-4" lang="en">
+                            (Demo) A posable robot. Drag to rotate!
+                        </p>
+                        <p class="text-gray-600 mb-4" lang="gr">
+                            (Demo) Ένα ρομπότ. Γυρίστε το!
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">1990 ₽</span>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="ru">Купить</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="en">Buy</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="gr">Αγορά</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- КАРТОЧКА 2: SIZE GUIDE -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x300/93C5FD/FFFFFF?text=Робот" 
+                         alt="Игрушка Робот" 
+                         class="w-full h-56 object-cover"
+                         onerror="this.src='https://placehold.co/400x300/93C5FD/FFFFFF?text=Toy+2'; this.onerror=null;">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" lang="ru">Робот-Исследователь</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="en">Explorer Bot</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="gr">Ρομπότ Εξερευνητής</h3>
+                        <p class="text-gray-600 mb-2" lang="ru">Готов к приключениям. Руки и ноги двигаются.</p>
+                        <p class="text-gray-600 mb-2" lang="en">Ready for adventure. Movable arms and legs.</p>
+                        <p class="text-gray-600 mb-2" lang="gr">Έτοιμος για περιπέτεια. Κινούμενα μέλη.</p>
+                        
+                        <!-- ШКАЛА РАЗМЕРОВ -->
+                        <div class="flex items-center text-sm text-gray-500 mb-4 p-2 bg-gray-50 rounded-lg">
+                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <div>
+                                <strong lang="ru">Размер: 15 см</strong> (примерно как смартфон)
+                            </div>
+                            <div>
+                                <strong lang="en">Size: 15 cm</strong> (about smartphone height)
+                            </div>
+                            <div>
+                                <strong lang="gr">Μέγεθος: 15 cm</strong> (όσο ένα smartphone)
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">2450 ₽</span>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="ru">Купить</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="en">Buy</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="gr">Αγορά</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- КАРТОЧКА 3 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img src="https://placehold.co/400x300/BEF264/FFFFFF?text=Набор+фигурок" 
+                         alt="Набор фигурок" 
+                         class="w-full h-56 object-cover"
+                         onerror="this.src='https://placehold.co/400x300/BEF264/FFFFFF?text=Toy+3'; this.onerror=null;">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2" lang="ru">Лесные Жители</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="en">Forest Creatures</h3>
+                        <h3 class="text-2xl font-bold mb-2" lang="gr">Πλάσματα του Δάσους</h3>
+                        <p class="text-gray-600 mb-4" lang="ru">Набор из 5 милых фигурок для развития воображения.</p>
+                        <p class="text-gray-600 mb-4" lang="en">A set of 5 cute figures to spark imagination.</p>
+                        <p class="text-gray-600 mb-4" lang="gr">Σετ 5 φιγούρων για ανάπτυξη της φαντασίας.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-blue-600">1500 ₽</span>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="ru">Купить</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="en">Buy</a>
+                            <a href="#" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold hover:bg-blue-200 transition-colors" lang="gr">Αγορά</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Баннер (Custom Order) -->
+    <section id="custom-order" class="bg-blue-600 text-white">
+        <div class="container mx-auto px-6 py-16 md:py-24 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" lang="ru">Есть Своя Идея?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" lang="en">Have Your Own Idea?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" lang="gr">Έχετε δική σας Ιδέα;</h2>
+            
+            <p class="text-lg mb-8 max-w-2xl mx-auto" lang="ru">
+                Мы можем напечатать игрушку по вашему эскизу. 
+                <span class="block mt-4 font-semibold">Просто прикрепите ваш файл в форме обратной связи ниже.</span>
+            </p>
+            <p class="text-lg mb-8 max-w-2xl mx-auto" lang="en">
+                We can print a toy from your sketch.
+                <span class="block mt-4 font-semibold">Just attach your file in the contact form below.</span>
+            </p>
+            <p class="text-lg mb-8 max-w-2xl mx-auto" lang="gr">
+                Μπορούμε να εκτυπώσουμε από το σκίτσο σας.
+                <span class="block mt-4 font-semibold">Απλά επισυνάψτε το αρχείο σας στην παρακάτω φόρμα.</span>
+            </p>
+
+            <a href="#contacts" class="bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors" lang="ru">
+                Обсудить проект
+            </a>
+            <a href="#contacts" class="bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors" lang="en">
+                Discuss Project
+            </a>
+            <a href="#contacts" class="bg-white text-blue-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors" lang="gr">
+                Συζήτηση Έργου
+            </a>
+        </div>
+    </section>
+
+    <!-- 5. О нас (About) -->
+    <section id="about" class="bg-white py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="ru">Почему Printoy?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="en">Why Printoy?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="gr">Γιατί Printoy;</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Feature 1 -->
+                <div class="p-6">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" lang="ru">Эко-Материалы</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="en">Eco-Materials</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="gr">Οικολογικά Υλικά</h3>
+                    <p class="text-gray-600" lang="ru">Мы используем только биоразлагаемый и безопасный для детей PLA-пластик.</p>
+                    <p class="text-gray-600" lang="en">We use only biodegradable and child-safe PLA plastic.</p>
+                    <p class="text-gray-600" lang="gr">Χρησιμοποιούμε μόνο βιοδιασπώμενο και ασφαλές για παιδιά PLA.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-6">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m11-4V3m2 2h-4m-1 11v4m2-2h-4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" lang="ru">Высокая Детализация</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="en">High Detail</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="gr">Υψηλή Λεπτομέρεια</h3>
+                    <p class="text-gray-600" lang="ru">Современное оборудование позволяет нам печатать с невероятной точностью.</p>
+                    <p class="text-gray-600" lang="en">Modern equipment allows us to print with incredible precision.</p>
+                    <p class="text-gray-600" lang="gr">Ο σύγχρονος εξοπλισμός μας επιτρέπει να εκτυπώνουμε με ακρίβεια.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-6">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2" lang="ru">Уникальный Дизайн</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="en">Unique Design</h3>
+                    <h3 class="text-xl font-bold mb-2" lang="gr">Μοναδικό Σχέδιο</h3>
+                    <p class="text-gray-600" lang="ru">Каждая игрушка может быть персонализирована. Выберите цвет и размер!</p>
+                    <p class="text-gray-600" lang="en">Every toy can be personalized. Choose your color and size!</p>
+                    <p class="text-gray-600" lang="gr">Κάθε παιχνίδι μπορεί να εξατομικευτεί. Διαλέξτε χρώμα και μέγεθος!</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Slide 6: Quote -->
-        <div class="slide flex-col items-center justify-center text-center">
-            <footer class="p-8">
-                <p class="text-2xl md:text-3xl italic text-gray-400">"When something is important enough, you do it even if the odds are not in your favor."</p>
-                <p class="text-lg text-gray-500 mt-4">- Elon Musk</p>
-            </footer>
+    <!-- 6. Контакты (Form) -->
+    <section id="contacts" class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8 md:p-12">
+                <h2 class="text-3xl font-bold text-center mb-8" lang="ru">Свяжитесь с нами</h2>
+                <h2 class="text-3xl font-bold text-center mb-8" lang="en">Contact Us</h2>
+                <h2 class="text-3xl font-bold text-center mb-8" lang="gr">Επικοινωνήστε Μαζί Μας</h2>
+                
+                <form action="https://formsubmit.co/printoy.cy@gmail.com" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="_next" value="#contacts">
+                    <input type="hidden" name="_captcha" value="false">
+
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 font-semibold mb-2" lang="ru">Ваше имя</label>
+                        <label for="name" class="block text-gray-700 font-semibold mb-2" lang="en">Your Name</label>
+                        <label for="name" class="block text-gray-700 font-semibold mb-2" lang="gr">Όνομα</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               data-placeholder-ru="Иван Петров"
+                               data-placeholder-en="John Doe"
+                               data-placeholder-gr="Γιάννης Παπαδόπουλος"
+                               placeholder="Иван Петров" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-semibold mb-2" lang="ru">Email</label>
+                        <label for="email" class="block text-gray-700 font-semibold mb-2" lang="en">Email</label>
+                        <label for="email" class="block text-gray-700 font-semibold mb-2" lang="gr">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               data-placeholder-ru="ivan@example.com"
+                               data-placeholder-en="john@example.com"
+                               data-placeholder-gr="giannis@example.com"
+                               placeholder="ivan@example.com" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="file-upload" class="block text-gray-700 font-semibold mb-2" lang="ru">Прикрепить файл (эскиз, фото)</label>
+                        <label for="file-upload" class="block text-gray-700 font-semibold mb-2" lang="en">Attach File (sketch, photo)</label>
+                        <label for="file-upload" class="block text-gray-700 font-semibold mb-2" lang="gr">Επισύναψη Αρχείου (σκίτσο, φώτο)</label>
+                        <input type="file" id="file-upload" name="file-upload" 
+                               accept="image/png, image/jpeg, image/webp"
+                               class="w-full text-sm text-gray-500 rounded-lg border border-gray-300 cursor-pointer focus:outline-none
+                                      file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-blue-100 file:text-blue-700
+                                      hover:file:bg-blue-200 transition-colors">
+                        <p class="mt-1 text-xs text-gray-500" lang="ru">Допустимые форматы: .png, .jpg, .webp (макс. 5МБ)</p>
+                        <p class="mt-1 text-xs text-gray-500" lang="en">Allowed formats: .png, .jpg, .webp (max 5MB)</p>
+                        <p class="mt-1 text-xs text-gray-500" lang="gr">Μορφές: .png, .jpg, .webp (μέγ. 5MB)</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="message" class="block text-gray-700 font-semibold mb-2" lang="ru">Ваш вопрос или идея</label>
+                        <label for="message" class="block text-gray-700 font-semibold mb-2" lang="en">Your question or idea</label>
+                        <label for="message" class="block text-gray-700 font-semibold mb-2" lang="gr">Η ερώτηση ή ιδέα σας</label>
+                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  data-placeholder-ru="Здравствуйте, я хотел бы заказать..."
+                                  data-placeholder-en="Hello, I would like to order..."
+                                  data-placeholder-gr="Γεια σας, θα ήθελα να παραγγείλω..."
+                                  placeholder="Здравствуйте, я хотел бы заказать..." required></textarea>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="w-full bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="ru">
+                            Отправить
+                        </button>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="en">
+                            Send
+                        </button>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors" lang="gr">
+                            Αποστολή
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
+    </section>
 
-    </div>
+    <!-- 7. FAQ -->
+    <section id="faq" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="ru">Частые вопросы (FAQ)</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="en">Frequently Asked Questions (FAQ)</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12" lang="gr">Συχνές Ερωτήσεις (FAQ)</h2>
+            
+            <div class="space-y-4">
+                <details class="bg-white p-5 rounded-lg shadow cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-lg list-none">
+                        <span lang="ru">Из каких материалов вы печатаете?</span>
+                        <span lang="en">What materials do you use?</span>
+                        <span lang="gr">Τι υλικά χρησιμοποιείτε;</span>
+                        <svg class="w-5 h-5 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-3 text-gray-600" lang="ru">
+                        Мы в основном используем PLA-пластик — это биоразлагаемый и экологически чистый материал...
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="en">
+                        We primarily use PLA plastic, which is a biodegradable and eco-friendly material...
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="gr">
+                        Κυρίως χρησιμοποιούμε πλαστικό PLA, ένα βιοδιασπώμενο και φιλικό προς το περιβάλλον υλικό...
+                    </p>
+                </details>
+                <details class="bg-white p-5 rounded-lg shadow cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-lg list-none">
+                        <span lang="ru">Как долго ждать заказ?</span>
+                        <span lang="en">How long does an order take?</span>
+                        <span lang="gr">Πόσο διαρκεί μια παραγγελία;</span>
+                        <svg class="w-5 h-5 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-3 text-gray-600" lang="ru">
+                        Время изготовления зависит от размера и сложности модели. Обычно 2-3 дня.
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="en">
+                        Production time depends on the model's size and complexity. Usually 2-3 days.
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="gr">
+                        Ο χρόνος παραγωγής εξαρτάται από το μέγεθος και την πολυπλοκότητα. Συνήθως 2-3 ημέρες.
+                    </p>
+                </details>
+                <details class="bg-white p-5 rounded-lg shadow cursor-pointer group">
+                    <summary class="flex justify-between items-center font-bold text-lg list-none">
+                        <span lang="ru">Могу ли я выбрать цвет?</span>
+                        <span lang="en">Can I choose a color?</span>
+                        <span lang="gr">Μπορώ να διαλέξω χρώμα;</span>
+                        <svg class="w-5 h-5 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </summary>
+                    <p class="mt-3 text-gray-600" lang="ru">
+                        Да! У нас в наличии более 20 разных цветов пластика, включая глянцевые, матовые и светящиеся в темноте.
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="en">
+                        Yes! We have over 20 different colors of plastic available, including glossy, matte, and glow-in-the-dark.
+                    </p>
+                    <p class="mt-3 text-gray-600" lang="gr">
+                        Ναι! Έχουμε πάνω από 20 διαφορετικά χρώματα, συμπεριλαμβανομένων γυαλιστερών, ματ και φωσφοριζέ.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
 
-    <!-- Navigation -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 flex justify-between items-center max-w-5xl mx-auto">
-        <button id="prevBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-            &larr; Previous
-        </button>
-        <div id="slide-counter" class="text-gray-400"></div>
-        <button id="nextBtn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-            Next &rarr;
+    <!-- 8. Подвал (Footer) -->
+    <footer class="bg-gray-800 text-gray-300 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <a href="#" class="text-3xl font-bold text-white mb-4 block">
+                Printoy
+            </a>
+            <ul class="flex justify-center space-x-6 mb-6">
+                <li>
+                    <a href="#catalog" class="hover:text-white transition-colors" lang="ru">Каталог</a>
+                    <a href="#catalog" class="hover:text-white transition-colors" lang="en">Catalog</a>
+                    <a href="#catalog" class="hover:text-white transition-colors" lang="gr">Κατάλογος</a>
+                </li>
+                <li>
+                    <a href="#custom-order" class="hover:text-white transition-colors" lang="ru">На заказ</a>
+                    <a href="#custom-order" class="hover:text-white transition-colors" lang="en">Custom</a>
+                    <a href="#custom-order" class="hover:text-white transition-colors" lang="gr">Παραγγελία</a>
+                </li>
+                <li>
+                    <a href="#about" class="hover:text-white transition-colors" lang="ru">О нас</a>
+                    <a href="#about" class="hover:text-white transition-colors" lang="en">About</a>
+                    <a href="#about" class="hover:text-white transition-colors" lang="gr">Σχετικά</a>
+                </li>
+            </ul>
+            
+            <p class="text-sm" lang="ru"> &copy; 2025 Printoy. Все права защищены. </p>
+            <p class="text-sm" lang="en"> &copy; 2025 Printoy. All rights reserved. </p>
+            <p class="text-sm" lang="gr"> &copy; 2025 Printoy. Με επιφύλαξη παντός δικαιώματος. </p>
+        </div>
+    </footer>
+
+    <!-- Кнопка Telegram -->
+    <a href="https://t.me/T2dge" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 z-50 flex items-center justify-center"
+       title="Написать в Telegram">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.66 7.23l-1.54 7.16c-.18.82-.7 1.02-1.3 0.62l-2.26-1.66-1.1 1.06c-.12.12-.22.22-.44.22-.2 0-.34-.1-.5-.24l-.84-2.76-2.14-0.66c-.84-.26-0.86-0.84 0.14-1.18l8.5-3.16c0.72-0.26 1.18 0.1 0.94 0.92z"/>
+        </svg>
+    </a>
+
+    <!-- БАННЕР COOKIES -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 flex flex-col md:flex-row justify-between items-center z-50 space-y-2 md:space-y-0">
+        <p class="text-sm text-center md:text-left">
+            <span lang="ru">Мы используем файлы cookie, чтобы улучшить ваш опыт на нашем сайте.</span>
+            <span lang="en">We use cookies to improve your experience on our site.</span>
+            <span lang="gr">Χρησιμοποιούμε cookies για να βελτιώσουμε την εμπειρία σας.</span>
+        </p>
+        <button id="accept-cookies" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-semibold">
+            <span lang="ru">Понятно</span>
+            <span lang="en">Got it</span>
+            <span lang="gr">Εντάξει</span>
         </button>
     </div>
 
     <script>
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const slideCounter = document.getElementById('slide-counter');
-        
-        let currentSlide = 0;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-            });
-            slides[index].classList.add('active');
+        document.addEventListener('DOMContentLoaded', function () {
             
-            // Update slide counter
-            slideCounter.textContent = `${index + 1} / ${slides.length}`;
+            // --- Скрипт мобильного меню ---
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = mobileMenu.querySelectorAll('a');
+            function toggleMenu() {
+                mobileMenu.classList.toggle('hidden');
+            }
+            menuButton.addEventListener('click', toggleMenu);
+            navLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
 
-            // Update button states
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index === slides.length - 1;
+            // --- Скрипт Cookies баннера ---
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptCookiesButton = document.getElementById('accept-cookies');
+            if (!localStorage.getItem('cookiesAccepted')) {
+                // Показываем баннер (используем flex для правильного отображения)
+                cookieBanner.style.display = 'flex';
+            }
+            acceptCookiesButton.addEventListener('click', function () {
+                localStorage.setItem('cookiesAccepted', 'true');
+                cookieBanner.style.display = 'none';
+            });
+
+            // --- Инициализация языка ---
+            const savedLang = localStorage.getItem('currentLang') || 'ru';
+            switchLanguage(savedLang);
+        });
+
+        // --- Скрипт конструктора цветов ---
+        function changeHeroColor(hexColor) {
+            const heroImage = document.getElementById('hero-image');
+            heroImage.src = `https://placehold.co/600x400/${hexColor}/FFFFFF?text=Яркая+3D+Игрушка`;
         }
 
-        nextBtn.addEventListener('click', () => {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                showSlide(currentSlide);
-            }
-        });
+        // --- УПРОЩЕННЫЙ И СТАБИЛЬНЫЙ Скрипт мультиязычности ---
+        function switchLanguage(lang) {
+            // 1. Просто меняем атрибут lang у тега html
+            // Вся работа по скрытию/отображению делается в CSS
+            document.documentElement.lang = lang;
 
-        prevBtn.addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                showSlide(currentSlide);
-            }
-        });
-        
-        // Key navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') {
-                nextBtn.click();
-            } else if (e.key === 'ArrowLeft') {
-                prevBtn.click();
-            }
-        });
+            // 2. Обновляем плейсхолдеры в формах
+            document.querySelectorAll('input[data-placeholder-ru], textarea[data-placeholder-ru]').forEach(el => {
+                el.placeholder = el.dataset['placeholder-' + lang];
+            });
 
-        // Initial setup
-        showSlide(currentSlide);
+            // 3. Обновляем заголовок страницы (title)
+            // Так как title не внутри body, наш CSS на него не влияет напрямую так, как хотелось бы для SEO,
+            // но для пользователя во вкладке смена сработает через JS
+            const titles = document.querySelectorAll('title');
+            let newTitle = "Printoy";
+            titles.forEach(t => {
+                if (t.lang === lang) newTitle = t.innerText;
+            });
+            document.title = newTitle;
+
+            // 4. Обновляем активную кнопку
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // 5. Сохраняем выбор
+            localStorage.setItem('currentLang', lang);
+        }
     </script>
 
 </body>
 </html>
-
-
